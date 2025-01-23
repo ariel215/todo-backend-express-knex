@@ -9,6 +9,16 @@ async function get(id) {
     return results[0];
 }
 
+async function get_for_project(project_id){
+    const results = await knex('todos').where("project_id", "=", project_id);
+    return results
+}
+
+
+async function assign(id, person_id) {
+    const updated = await knex('assigned_todos').insert({task_id: id, person_id: person_id})
+}
+
 async function create(title, order) {
     const results = await knex('todos').insert({ title, order }).returning('*');
     return results[0];
@@ -32,6 +42,8 @@ async function clear() {
 module.exports = {
     all,
     get,
+    get_for_project,
+
     create,
     update,
     delete: del,

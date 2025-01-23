@@ -24,6 +24,16 @@ async function getTodo(req, res) {
   return res.send(todo);
 }
 
+async function getTodosForProject(req,res) {
+  const project_todos = await todos.get_for_project(req.params.project_id);
+  return res.send(project_todos.map(_.curry(createToDo)(req)))
+}
+
+async function assignTodo(req, res){
+  const updated = await todos.assign(req.params.id, req.params.assigned_to);
+  return res.send(createToDo(req,updated))
+}
+
 async function postTodo(req, res) {
   const created = await todos.create(req.body.title, req.body.order);
   return res.send(createToDo(req, created));
@@ -44,6 +54,7 @@ async function deleteTodo(req, res) {
   return res.send(createToDo(req, deleted));
 }
 
+
 function addErrorReporting(func, message) {
     return async function(req, res) {
         try {
@@ -59,7 +70,9 @@ function addErrorReporting(func, message) {
 
 const toExport = {
     getAllTodos: { method: getAllTodos, errorMessage: "Could not fetch all todos" },
+    getTodosForProject: {method: getTodosForProject, errorMessage: "Could not fetch todos for project"},
     getTodo: { method: getTodo, errorMessage: "Could not fetch todo" },
+    assignTodo: {method: assignTodo, errorMessage: "Could not assign todo"},
     postTodo: { method: postTodo, errorMessage: "Could not post todo" },
     patchTodo: { method: patchTodo, errorMessage: "Could not patch todo" },
     deleteAllTodos: { method: deleteAllTodos, errorMessage: "Could not delete all todos" },
