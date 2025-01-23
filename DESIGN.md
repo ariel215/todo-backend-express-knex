@@ -2,7 +2,7 @@
 
 - Tasks
   - name (text) 1-1
-  - description (text) 1-1
+  - order (text) 1-1
   - created_at (timestamp) 1-1
   - due (timestamp | null) 1-1
   - completed_at (timestamp | null) 1-1
@@ -22,7 +22,7 @@
 ### Table: Tasks
  - id (int) (primary key) 
   - name (text) 
-  - description (text)
+  - order (text)
   - created_at (timestamp)
   - due (timestamp | null) 
   - completed_at (timestamp | null)
@@ -33,14 +33,15 @@
  - id (int) (primary key)
  - name (text)
 
+### Table: Projects
+ - id (int) (primary key)
+ - name (text)
+
 ### Table: Assigned_Tasks
  - id (int) (primary key)
  - person_id (int) (foreign key) (index)
  - task_id (int) (foreign key)
 
-### Table: Projects
- - id (int) (primary key)
- - name (text)
 
 ### Table: Persons_Projects
  - id (int) (primary key)
@@ -75,7 +76,7 @@ POST /api/tasks
 Body: {
     user_id: int, 
     name: str,
-    description: str,
+    order: str,
     due: datetime?,
     project: int?
     assigned_to: Array<str>?
@@ -89,7 +90,7 @@ POST /api/tasks/<task_id>
 
 Body {
     name: str?,
-    description: str?,
+    order: str?,
     due: datetime?,
     completed: bool?
     project: int?, 
